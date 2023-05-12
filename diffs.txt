@@ -1,0 +1,37 @@
+Result of diff between teegg.f in this repository and the teegg.f file obtained from Dean. 
+
+Log of changes.
+1. Comment out use of OPAL-specific REPORT subroutine in USINIT
+2. Comment out calls to GOLINT and GOLIFE (part of the OPAL GEANT3 simulation (GOPAL)).
+3. Add event writing subroutine call (evwrite.f) in main event loop for sumping 4-vectors.
+4. Rename TEEGGX to TEEGGXP in main code (this is never called).
+5. Add customizable teeggx.f as an include.
+6. Add the evwrite.f file as another new include
+
+graham:~/teeggGen$ pwd
+/home/graham/teeggGen
+graham:~/teeggGen$ diff teegg.f /home/graham/TEEGG/teegg/lib/code/teegg.f
+5005,5006c5005
+< *         CALL REPORT('USINIT',1,'CRASH')
+<          WRITE(6,*)'CRASH at line 5006 of USINIT'
+---
+>          CALL REPORT('USINIT',1,'CRASH')
+5292,5295c5291,5292
+<       write(6,*)'Turned off GOLINT and GOLIFE'
+< 
+< *      CALL GOLINT
+< *      CALL GOLIFE
+---
+>       CALL GOLINT
+>       CALL GOLIFE
+5442,5443d5438
+<             
+<             CALL EVWRITE
+5819c5814
+<       SUBROUTINE TEEGGXP
+---
+>       SUBROUTINE TEEGGX
+6027,6029d6021
+<       
+<       include 'teeggx.f'
+<       include 'evwrite.f'
