@@ -1,0 +1,217 @@
+%                    TEEGG USER GUIDE
+%                    ----------------
+%
+% This is a PLAIN TeX document.
+%
+\magnification=\magstep1
+\nopagenumbers
+\parindent 0pt
+\vsize=24 true cm \hsize=17 true cm
+%
+%\font\scriptrm=amr7                    \scriptfont0=\scriptrm
+%\font\tentt=amtt10                     \scriptfont7=\tentt
+%\mathchardef\ttplus="072B \mathchardef\ttmins="072D %Get a good e+ and e-
+\def\eplus{e^{+}}    
+\def\emins{e^{-}}
+%
+\def\veto{\mathop{\rm veto}\nolimits}
+\def\cut{\mathop{\rm cut}\nolimits}
+\def\nextline{\unskip\nobreak\hskip\parfillskip\break}
+\newskip\skipi  \skipi= .4cm plus .4cm minus .2cm
+\newskip\skipii \skipii=.8cm plus .8cm minus .4cm
+%
+\centerline{\bf TEEGG GUIDE \rm (Version 7.1) }
+ 
+\vskip \skipii
+The Monte Carlo event generator, TEEGG, simulates the process
+$\eplus \emins \rightarrow \eplus \emins \gamma (\gamma),$
+for low $Q^2$ configurations.
+This guide describes the many parameters of TEEGG.
+\vskip \skipi
+Reference: D. Karlen, {\sl Nucl.\ Phys.\ }{\bf B289} (1987) 23.
+ 
+\vskip \skipii
+\centerline{\bf 1. General Parameters}
+%\vskip -\skipi
+%
+%The general characteristics of the event sample is defined by the
+%following parameters:
+%$$\vbox{
+\halign{
+\hskip 1em \tt # \hfil & \vtop{\hsize=32em # \strut} \cr
+EB     &  the beam energy in GeV. \cr
+CONFIG & the event configuration to be generated. \cr }
+
+This specifies what particles are to be in the detector acceptance, the remaining
+are to be below the veto angle. 
+The allowed choices are:
+
+       \halign{\hskip 1em \it # \hfil &
+               \vtop{\hsize 32em # \strut }\cr
+       EGAMMA &  $e\gamma$  \cr
+       GAMMA  &  single $\gamma$        \cr
+       ETRON  &  single $e$   \cr }
+       
+  RADCOR {\hskip 1em} the level of radiative correction to be applied.
+  Valid choices
+  are:
+       \halign{\hskip 1em \it # \hfil &
+               \vtop{\hsize 32em # \strut}\cr
+       NONE & no radiative correction is applied; only
+              order $\alpha^3$. \cr
+       SOFT & virtual and soft real photon correction to the order
+              $\alpha^3$ cross section is applied. \cr
+       HARD & double radiative Bhabha events are generated. \cr }
+In order to generate an event sample correct to order $\alpha^4$,
+{\it SOFT} and {\it HARD} event samples must be generated separately
+and then
+combined. %\strut \cr
+
+%\strut
+CUTOFF {\hskip 1em} defines the separation between soft and hard photons in the
+          $\gamma e$ center of mass system (in GeV). This is used
+          with {\tt RADCOR} = {\it SOFT} or {\it HARD}. An invalid choice
+          for this quantity will be noted in the printed summary.
+
+%\strut 
+UNWGHT {\hskip 1em} specifies if unweighted events are to be generated. If
+          {\tt UNWGHT} = {\tt .FALSE.}, then the event weight is given
+          the variable {\tt WGHT}.
+%}}$$
+ 
+\vskip \skipii
+\centerline{\bf 2. Acceptance Parameters}
+\vskip \skipi
+%
+%The detector acceptance and veto is defined by the following parameters:
+The following parameters determine the acceptance for the $ee\gamma$
+final state:
+$$\vbox{\halign{
+\hskip 1em \tt # \hfil &#&# \hfil &\hskip 1em \vtop{\hsize=28em  # } \cr
+EEMIN  &($E_{e\min}$&)&    Electron acceptance energy threshold (GeV) \cr
+TEMIN  &($\theta_{e\min}$&)&     Electron acceptance angle (rad) \cr
+EGMIN  &($E_{\gamma\min}$&)& Photon acceptance energy threshold (GeV) \cr
+TGMIN  &($\theta_{\gamma\min}$&)&  Photon acceptance angle (rad) \cr
+TEVETO &($\theta_{e\veto}$&)&    Electron veto angle (rad) \cr
+TGVETO &($\theta_{\gamma\veto}$&)& Photon veto angle (rad) \cr
+}}$$
+The set of parameters required to define the acceptance depends on the
+event configuration.
+For a configuration where an electron is to be in the acceptance,
+{\tt TEMIN}
+and {\tt EEMIN} must be supplied and similarly if a photon is to be
+in the acceptance, {\tt TGMIN} and {\tt EGMIN} must be supplied.
+For the single $e$ configuration, the parameter {\tt TGVETO} is used
+to define the photon veto.
+{\tt TEVETO} is always used, as one electron is below this
+veto angle for all configurations (for the single $\gamma$
+configuration, both electrons are below this angle).
+ 
+\eject
+ 
+Additional parameters to define the acceptance for the
+$ee\gamma\gamma$ final state are:
+ 
+\vskip -\skipi
+$$\vbox{\halign{
+\hskip 1em \tt # \hfil &#&# \hfil &\hskip 1em \vtop{\hsize=28em  # } \cr
+PEGMIN &($\phi_{e\gamma\min}$&)& Electron photon $\phi$ separation
+                          threshold for $e\gamma$ config. (rad) \cr
+EEVETO &($E_{e\veto}$&)& Electron veto energy threshold (GeV) \cr
+EGVETO &($E_{\gamma\veto}$&)& Photon veto energy threshold (GeV) \cr
+PHVETO &($\phi_{\ \veto}$&)& veto $\phi$ separation threshold (rad) \cr
+}}$$
+ 
+These parameters should not need to be changed from the default values.
+An $e\gamma$ trial event is accepted only if an $e$ and $\gamma$ are
+in the acceptance, and separated in $\phi$ by at least {\tt PEGMIN} rad.
+A single $e$ trial event is rejected if a $\gamma$ is above {\tt TGVETO}
+with energy greater than {\tt EGVETO} and separated
+from the $e$ in $\phi$ by
+more than {\tt PHVETO}.
+A single $\gamma$ trial event is rejected if an $e$ is above {\tt TEVETO}
+with energy greater than {\tt EEVETO}.
+It is also rejected if a second $\gamma$ is above {\tt TGVETO}
+with energy greater than {\tt EGVETO} and separated
+from the first $\gamma$ in $\phi$ by
+more than {\tt PHVETO}.
+ 
+\vskip \skipi
+\centerline{\bf 3. Maximum Weights}
+\vskip \skipi
+ 
+The program does not choose
+the maximum event weights, and so they must be set by the user.
+The maximum weights should be chosen to be as small as possible.
+$$\vbox{\halign{
+\hskip 1em \tt # \hfil & \vtop{\hsize=32em # \strut} \cr
+WGHT1M & used in the rejection method for the first degree of freedom,
+         $q^0_{+}$. \cr
+WGHTMX & used in the trial event selection only if unweighted events are
+         requested. If this is not larger than
+         all weights of accepted events, then the event distribution
+         will not be correct. A proper choice for this
+         parameter can vary from 0.1 to 10 or more. \cr
+}}$$
+ 
+\vskip \skipi
+\centerline{\bf 4. Other Parameters}
+\vskip \skipi
+ 
+Two remaining parameters specify the squared matrix elements to use.
+$$\vbox{\halign{
+\hskip 1em \tt # \hfil & \vtop{\hsize=32em # } \cr
+MATRIX &
+  defines the matrix element for the
+  $\eplus \emins \rightarrow \eplus \emins \gamma$
+  generation.
+       \halign{\hskip 1em \it # \hfil &
+               \vtop{\hsize 26em # \strut }\cr
+       BK    & Berends and Kleiss,
+               {\sl Nucl.\ Phys.\ }{\bf B228} (1983) 537. \cr
+       BKM2  & as above but includes $t$ and $t'$ channel mass terms. \cr
+       TCHAN & as calculated by using only the two
+               $t$ channel diagrams. \cr
+       EPA   & as derived from the equivalent photon
+               approximation.  \cr} \cr
+MTRXGG &
+  defines the matrix element for the
+  $\eplus \emins \rightarrow \eplus \emins \gamma \gamma$
+  generation.
+       \halign{\hskip 1em \it # \hfil &
+               \vtop{\hsize 26em # \strut }\cr
+       EPADC & as found from the EPA and double compton scattering. \cr
+       BEEGG & Berends {\it et. al.},
+               {\sl Nucl.\ Phys.\ }{\bf B264} (1986) 265. \cr
+       MEEGG & Martinez and Miquel, UAB-LFAE 87-01.
+               \cr
+       HEEGG & Hybrid; {\it EPADC} for very low $Q^2$,
+               {\it BEEGG} for moderate $Q^2$. \cr} \cr
+}}$$
+ 
+\vskip \skipi
+\centerline{\bf 5. Defaults}
+\vskip \skipi
+The defaults for the parameters described above are listed here.
+$$\vbox{\halign{
+           {\tt #} \hfil & {\it #} \hfil \hskip 1em &
+           {\tt #} \hfil & # & # \hfil \hskip 1em &
+           {\tt #} \hfil & # & # \hfil \hskip 1em &
+           {\tt #} \hfil & # \hfil \cr
+ 
+ 
+EB    &{\rm=14.5 GeV}
+                &EEMIN &=2.0 &GeV &PEGMIN&=$\pi/4$& rad &WGHT1M&=1.001\cr
+CONFIG&=EGAMMA  &TEMIN &=0.72&rad &EEVETO&=0.0    & GeV &WGHTMX&=0.5  \cr
+RADCOR&=NONE    &EGMIN &=2.0 &GeV &EGVETO&=0.0    & GeV &MATRIX&=%
+                                                           {\it BKM2} \cr
+CUTOFF&{\rm=0.25 GeV}
+                &TGMIN &=0.72&rad &PHVETO&=$\pi/4$& rad &MTRXGG&=%
+                                                          {\it EPADC} \cr
+UNWGHT&={\tt.TRUE.}
+                &TEVETO&=0.1 &rad &      &        &     &        &    \cr
+      &         &TGVETO&=0.05&rad &      &        &     &        &    \cr
+}}$$
+ 
+\vfil
+\end
