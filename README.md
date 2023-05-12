@@ -16,5 +16,7 @@ Included in the various *-config file are example configurations.
 
 With the current code the log file goes to fortran unit 7 and the 
 4-vector file (written by evwrite.f) to unit 25.
+The minor implementation differences with respect to the version 
+from Dean Karlen are documented in diffs.txt.
 
 Graham W. Wilson, 12-MAY-2023
