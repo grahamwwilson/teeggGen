@@ -1,0 +1,25 @@
+teegg.f:5671:18:
+
+ 5671 |       CALL ITRAN7(IR,1)
+      |                  1
+Warning: Rank mismatch in argument ‘iarray’ at (1) (rank-1 and scalar) [-Wargument-mismatch]
+teegg.f:5202:14:
+
+ 5202 |       IF(.NOT.LPASS(0))GOTO 1
+      |              1
+Warning: Type mismatch in argument ‘dummy’ at (1); passed INTEGER(4) to REAL(4) [-Wargument-mismatch]
+teegg.f:5438:20:
+
+ 5438 |             IF(.NOT.LPASS(0))GOTO 3
+      |                    1
+Warning: Type mismatch in argument ‘dummy’ at (1); passed INTEGER(4) to REAL(4) [-Wargument-mismatch]
+teegg.f:3601:20:
+
+ 3601 |       COMMON/TEVQUA/TA,TP,SP,U,UP
+      |                    1
+Warning: Named COMMON block ‘tevqua’ at (1) shall be of the same size as elsewhere (40 vs 96 bytes)
+teegg.f:3803:20:
+
+ 3803 |       COMMON/TEVQUA/T,TP,SP,U,UP
+      |                    1
+Warning: Named COMMON block ‘tevqua’ at (1) shall be of the same size as elsewhere (40 vs 96 bytes)
